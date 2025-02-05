@@ -23,9 +23,9 @@ public class RegisterDao {
             throw new RuntimeException("password must contain at least 1 uppercase, 1 lowercase letter, 1 number, 1 special character");
         }
 
-//        if (!isEmailValid(email)) {
-//            throw new RuntimeException("email is not valid");
-//        }
+        if (!isEmailValid(email)) {
+            throw new RuntimeException("email is not valid");
+        }
 
         String sql = "insert into customers (name, lastname, email, phone) values(?,?,?,?)";
 

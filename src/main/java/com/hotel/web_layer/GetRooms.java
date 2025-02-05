@@ -19,10 +19,13 @@ public class GetRooms extends HttpServlet {
         resp.setContentType("application/json");
         try {
             resp.getWriter().write(roomDao.getRooms().toString());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        catch (RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

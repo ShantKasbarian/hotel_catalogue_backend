@@ -26,10 +26,14 @@ public class Register extends HttpServlet {
             registerDao.register(name, lastname, password, email, phone);
             response.setContentType("html/text");
             response.getWriter().write("<h1>Registration successful</h1>");
-        } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        }
+        catch (RuntimeException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

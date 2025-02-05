@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/book/now")
+@WebServlet("/book")
 public class BookNow extends HttpServlet {
     private BookNowDao bookNowDao = new BookNowDao();
 
@@ -22,10 +22,13 @@ public class BookNow extends HttpServlet {
             bookNowDao.book(userId, roomId);
             resp.setContentType("application/json");
             resp.getWriter().write("room has been booked");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        catch (RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }
